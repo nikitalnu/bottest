@@ -3,7 +3,7 @@ from flask import Flask, request
 import sqlite3
 
 TOKEN = '6386667633:AAFjQC83NCgrsq1WXPWxgWZfoYTVytzQ3XI'
-WEBHOOK_URL = 'https://your-app-name.onrender.com/YOUR_WEBHOOK_PATH'
+WEBHOOK_URL = 'https://bottest-3urm.onrender.com'
 
 bot = telebot.TeleBot(TOKEN)
 
