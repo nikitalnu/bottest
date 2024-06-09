@@ -4,7 +4,7 @@ import sqlite3
 import os
 
 TOKEN = "6386667633:AAFjQC83NCgrsq1WXPWxgWZfoYTVytzQ3XI"  # Ваш токен Telegram
-WEBHOOK_URL = "https://bottest-4736.onrender.com/webhook/telegram"  # Используйте ваш URL
+WEBHOOK_URL = "https://api.render.com/deploy/srv-cpiruccf7o1s73bltnvg?key=ag96Hm5iIVI"  # Используйте ваш URL
 
 bot = telebot.TeleBot(TOKEN)
 
