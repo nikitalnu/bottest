@@ -1,9 +1,10 @@
 import telebot
 from flask import Flask, request
 import sqlite3
+import os
 
-TOKEN = '6386667633:AAFjQC83NCgrsq1WXPWxgWZfoYTVytzQ3XI'
-WEBHOOK_URL = 'https://bottest-3urm.onrender.com'
+TOKEN = "6386667633:AAFjQC83NCgrsq1WXPWxgWZfoYTVytzQ3XI"  # Ваш токен Telegram
+WEBHOOK_URL = "https://bottest-4736.onrender.com/webhook/telegram"  # Используйте ваш URL
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -32,26 +33,32 @@ def add_subscriber(user_id):
     conn.commit()
 
 # Обработчик webhook
-@app.route('/YOUR_WEBHOOK_PATH', methods=['POST'])
+@app.route('/webhook/telegram', methods=['POST'])
 def webhook():
-    json_str = request.get_data().decode('UTF-8')
-    update = telebot.types.Update.de_json(json_str)
-    bot.process_new_updates([update])
+    try:
+        json_str = request.get_data().decode('UTF-8')
+        update = telebot.types.Update.de_json(json_str)
+        bot.process_new_updates([update])
+    except Exception as e:
+        print(f"Ошибка обработки webhook: {e}")
     return 'ok', 200
 
 # Обработчик новых сообщений
 @bot.message_handler(content_types=['new_chat_members'])
 def handle_new_member(message):
-    for member in message.new_chat_members:
-        user_id = member.id
-        if check_new_subscriber(user_id):
-            add_subscriber(user_id)
-            bot.send_message(user_id, "Добро пожаловать в наш канал!")
+    try:
+        for member in message.new_chat_members:
+            user_id = member.id
+            if check_new_subscriber(user_id):
+                add_subscriber(user_id)
+                bot.send_message(user_id, "Добро пожаловать в наш канал!")
+    except Exception as e:
+        print(f"Ошибка обработки новых участников: {e}")
 
 # Установка вебхука
 bot.remove_webhook()
 bot.set_webhook(url=WEBHOOK_URL)
 
-# Запуск Flask-сервера
+# Запуск Flask-сервера (только для локальной отладки)
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
